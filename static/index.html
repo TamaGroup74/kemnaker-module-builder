@@ -3,22 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0a0e17">
 <title>Kemnaker AI Module Builder</title>
 <style>
 :root{
-  /* Ronde 9: palet brand kemnaker.go.id (theme-color resmi situs)
-     navy #15406a · teal #09b8a7 · navy gelap #0b2137 · tint #deebff */
-  --bg:#fbfbfd; --surface:#ffffff; --side:#f4f5f7;
-  --side-border:rgba(0,0,0,.065); --border:rgba(0,0,0,.09); --hairline:rgba(0,0,0,.06);
-  --text:#1d1d1f; --muted:#6e6e73; --hover:rgba(0,0,0,.045); --input-border:rgba(0,0,0,.16);
-  --bubble:#f4f5f7;
-  --accent:#15406a; --accent-down:#0f3252; --accent-soft:rgba(21,64,106,.09);
-  --teal:#09b8a7; --teal-down:#04756b; --teal-soft:rgba(9,184,167,.12);
-  --err:#d70015; --err-soft:rgba(255,59,48,.09); --ok:#04756b; --ok-soft:rgba(9,184,167,.14);
-  --warn:#8f6f14; --warn-soft:rgba(255,204,0,.16);
-  --shadow-1:0 1px 2px rgba(0,0,0,.05),0 2px 8px rgba(0,0,0,.04);
-  --shadow-2:0 4px 12px rgba(0,0,0,.07),0 16px 40px rgba(0,0,0,.09);
-  --ring:0 0 0 4px rgba(21,64,106,.18);
+  /* Premium dark — navy Kemnaker #15406a sebagai basis, teal #09b8a7 aksen tunggal */
+  --bg:#0a0e17; --bg2:#0d1220; --surface:#111828; --surface2:#161f33; --raised:#1a2440;
+  --side:#0c1120; --side-border:rgba(148,183,255,.09); --border:rgba(148,183,255,.11);
+  --hairline:rgba(148,183,255,.08);
+  --text:#e8edf8; --muted:#8a94ad; --hover:rgba(148,183,255,.07);
+  --input-border:rgba(148,183,255,.16);
+  --bubble:#1a2440;
+  --accent:#15406a; --accent-down:#0f3252; --accent-soft:rgba(64,131,224,.12);
+  --blue:#4a8ef0; --blue-down:#3a78d0;
+  --teal:#09b8a7; --teal-down:#04756b; --teal-soft:rgba(9,184,167,.13);
+  --err:#f4708b; --err-soft:rgba(244,112,139,.12); --ok:#2fc98e; --ok-soft:rgba(47,201,142,.13);
+  --warn:#e8b55c; --warn-soft:rgba(232,181,92,.13);
+  --shadow-1:0 1px 2px rgba(2,6,16,.5),0 4px 16px rgba(2,6,16,.35);
+  --shadow-2:0 8px 28px rgba(2,6,16,.5),0 20px 60px rgba(2,6,16,.4);
+  --ring:0 0 0 3px rgba(74,142,240,.35);
   --ease:cubic-bezier(.3,.15,.25,1);
 }
 *{box-sizing:border-box}
@@ -30,30 +34,31 @@ body{
   -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
 }
 button{font-family:inherit; letter-spacing:inherit}
-a{color:var(--accent); text-decoration:none}
+a{color:var(--blue); text-decoration:none}
 a:hover{text-decoration:underline; text-underline-offset:2px}
 :focus-visible{outline:none; box-shadow:var(--ring)}
-::selection{background:rgba(21,64,106,.16)}
+::selection{background:rgba(74,142,240,.32)}
 ::-webkit-scrollbar{width:9px; height:9px}
-::-webkit-scrollbar-thumb{background:rgba(0,0,0,.16); border-radius:8px; border:3px solid transparent; background-clip:content-box}
-::-webkit-scrollbar-thumb:hover{background:rgba(0,0,0,.28); border:2px solid transparent; background-clip:content-box}
+::-webkit-scrollbar-thumb{background:rgba(148,183,255,.16); border-radius:8px; border:3px solid transparent; background-clip:content-box}
+::-webkit-scrollbar-thumb:hover{background:rgba(148,183,255,.28); border:2px solid transparent; background-clip:content-box}
 ::-webkit-scrollbar-track{background:transparent}
-.app{display:flex; height:100vh; overflow:hidden}
+.app{display:flex; height:100dvh; overflow:hidden}
 
 /* ============ SIDEBAR ============ */
 #sidebar{
-  width:280px; flex:0 0 280px; background:var(--side);
+  width:288px; flex:0 0 288px; background:var(--side);
   border-right:1px solid var(--side-border);
   display:flex; flex-direction:column; transition:margin-left .25s var(--ease);
+  position:relative; z-index:2;
 }
-#sidebar.collapsed{margin-left:-280px}
+#sidebar.collapsed{margin-left:-288px}
 .sb-pad{padding:14px 14px 6px}
 .sb-brand{display:flex; align-items:center; gap:10px; padding:2px 4px 12px}
 .sb-brand .mark{
   width:34px; height:34px; border-radius:9px; flex:0 0 auto;
-  background:linear-gradient(160deg,#09b8a7,#15406a 78%);
+  background:linear-gradient(160deg,#09b8a7,#15406a 82%);
   display:flex; align-items:center; justify-content:center;
-  box-shadow:0 1px 3px rgba(21,64,106,.35), inset 0 1px 0 rgba(255,255,255,.35);
+  box-shadow:0 1px 6px rgba(9,184,167,.3), inset 0 1px 0 rgba(255,255,255,.25);
 }
 .sb-name{font-size:13.5px; font-weight:650; line-height:1.25; letter-spacing:-.01em}
 .sb-name span{display:block; font-size:10.5px; font-weight:500; color:var(--muted); letter-spacing:.02em}
@@ -63,12 +68,11 @@ a:hover{text-decoration:underline; text-underline-offset:2px}
   transition:background .15s var(--ease);
 }
 #btn-new:hover{background:var(--hover)}
-#btn-new:active{background:rgba(0,0,0,.08)}
-#btn-new .ico{display:flex; color:var(--accent)}
+#btn-new:active{background:rgba(148,183,255,.12)}
+#btn-new .ico{display:flex; color:var(--teal)}
 .sb-scroll{flex:1; overflow-y:auto; padding:6px 14px}
 .sb-section{font-size:10.5px; font-weight:650; color:var(--muted); letter-spacing:.8px; text-transform:uppercase; margin:14px 4px 8px}
 .sb-empty{color:var(--muted); font-size:12.5px; padding:2px 4px; line-height:1.5}
-/* Ronde 9: daftar riwayat percakapan */
 .thread-item{
   display:block; width:100%; text-align:left; background:none; border:0; border-radius:10px;
   padding:8px 10px; margin-bottom:2px; cursor:pointer; transition:background .15s var(--ease);
@@ -77,8 +81,8 @@ a:hover{text-decoration:underline; text-underline-offset:2px}
 .thread-item.active{background:var(--accent-soft)}
 .thread-item .t-title{display:block; font-size:12.8px; font-weight:550; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; line-height:1.45}
 .thread-item .t-meta{display:block; font-size:10.5px; color:var(--muted)}
-.thread-item.active .t-title{color:var(--accent); font-weight:600}
-/* Ronde 9: kartu produksi (multi-run paralel) */
+.thread-item.active .t-title{color:var(--blue); font-weight:600}
+/* Kartu produksi (multi-run paralel) */
 .run-block{
   background:var(--surface); border:1px solid var(--hairline); border-radius:14px;
   padding:11px 13px; margin-bottom:8px; box-shadow:var(--shadow-1);
@@ -88,33 +92,33 @@ a:hover{text-decoration:underline; text-underline-offset:2px}
 .run-steps{margin-bottom:6px}
 .run-block .card{box-shadow:none; margin-bottom:6px}
 .run-block .dl-item{margin-bottom:5px}
-.badge.run{color:var(--accent); background:var(--accent-soft)}
+.badge.run{color:var(--blue); background:var(--accent-soft)}
 .badge.ok{color:var(--ok); background:var(--ok-soft)}
 .badge.err{color:var(--err); background:var(--err-soft)}
 .card{
-  background:var(--surface); border:1px solid var(--hairline); border-radius:14px;
-  padding:11px 13px; margin-bottom:8px; box-shadow:var(--shadow-1);
-  transition:transform .2s var(--ease), box-shadow .2s var(--ease);
+  background:var(--surface2); border:1px solid var(--hairline); border-radius:14px;
+  padding:11px 13px; margin-bottom:8px; box-shadow:none;
+  transition:border-color .2s var(--ease);
 }
-.card:hover{transform:translateY(-1px); box-shadow:var(--shadow-2)}
+.card:hover{border-color:rgba(148,183,255,.18)}
 .card h4{margin:0 0 3px; font-size:12.8px; font-weight:600; display:flex; gap:6px; align-items:center; flex-wrap:wrap}
 .card .meta{color:var(--muted); font-size:11.5px; margin-bottom:5px}
 .card .feedback{color:var(--warn); font-size:11.5px; max-height:70px; overflow-y:auto}
 .badge{font-size:10px; font-weight:600; padding:2.5px 8px; border-radius:999px; white-space:nowrap; letter-spacing:.02em}
-.badge.wait{color:var(--muted); background:rgba(0,0,0,.05)}
-.badge.write{color:var(--accent); background:var(--accent-soft)}
-.badge.qa, .badge.review{color:var(--warn); background:var(--warn-soft)}
+.badge.wait{color:var(--muted); background:rgba(148,183,255,.08)}
+.badge.write{color:var(--blue); background:var(--accent-soft)}
+.badge.qa,.badge.review{color:var(--warn); background:var(--warn-soft)}
 .badge.pass{color:var(--ok); background:var(--ok-soft)}
 .badge.fail{color:var(--err); background:var(--err-soft)}
-.progress-bar{height:4px; border-radius:3px; background:rgba(0,0,0,.07); overflow:hidden}
-.progress-bar i{display:block; height:100%; border-radius:3px; background:linear-gradient(90deg,#09b8a7,var(--accent)); width:0; transition:width .4s var(--ease)}
+.progress-bar{height:4px; border-radius:3px; background:rgba(148,183,255,.1); overflow:hidden}
+.progress-bar i{display:block; height:100%; border-radius:3px; background:linear-gradient(90deg,var(--teal),var(--blue)); width:0; transition:width .4s var(--ease)}
 .dl-item{
-  display:block; background:var(--surface); border:1px solid var(--hairline); border-radius:11px;
+  display:block; background:var(--surface2); border:1px solid var(--hairline); border-radius:11px;
   padding:9px 12px; margin-bottom:6px; color:var(--text); text-decoration:none; font-size:12.5px;
-  overflow:hidden; text-overflow:ellipsis; white-space:nowrap; box-shadow:var(--shadow-1);
-  transition:transform .18s var(--ease), box-shadow .18s var(--ease);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  transition:border-color .18s var(--ease), background .18s var(--ease);
 }
-.dl-item:hover{transform:translateY(-1px); box-shadow:var(--shadow-2); border-color:rgba(21,64,106,.4)}
+.dl-item:hover{text-decoration:none; background:var(--raised); border-color:rgba(74,142,240,.4)}
 .sb-bottom{border-top:1px solid var(--side-border); padding:10px 14px; font-size:12px; color:var(--muted)}
 .dot{width:7px; height:7px; border-radius:50%; background:var(--muted); flex:0 0 auto}
 .dot.ok{background:var(--ok)}
@@ -128,77 +132,83 @@ a:hover{text-decoration:underline; text-underline-offset:2px}
 
 /* ============ KOLOM CHAT ============ */
 .main{flex:1; display:flex; flex-direction:column; min-width:0; position:relative}
+/* Aurora: gradasi mesh lembut di atas, teal/navy — memudar ke solid */
 .main::before{
   content:""; position:absolute; inset:0; pointer-events:none; z-index:0;
-  background:radial-gradient(640px 320px at 50% -120px, rgba(21,64,106,.05), transparent 72%);
+  background:
+    radial-gradient(900px 420px at 18% -8%, rgba(21,64,106,.5), transparent 62%),
+    radial-gradient(760px 380px at 86% -6%, rgba(9,184,167,.13), transparent 64%),
+    radial-gradient(1000px 500px at 50% 118%, rgba(21,64,106,.34), transparent 70%);
 }
 #btn-menu{
-  display:none; position:absolute; top:14px; left:14px; z-index:10; background:var(--surface); border:1px solid var(--hairline);
+  display:none; position:absolute; top:14px; left:14px; z-index:10; background:rgba(17,24,40,.85); border:1px solid var(--hairline);
   color:var(--muted); cursor:pointer; padding:8px; border-radius:10px; box-shadow:var(--shadow-1);
 }
 #btn-menu:hover{color:var(--text)}
 main#scroll{flex:1; overflow-y:auto; min-height:0; scroll-behavior:smooth; position:relative; z-index:1}
 #chat-col{max-width:768px; margin:0 auto; padding:28px 24px 10px; display:flex; flex-direction:column; gap:24px}
 
-#hero{text-align:center; padding:15vh 0 0}
+#hero{text-align:center; padding:14dvh 0 0}
 #hero .eyebrow{
-  font-size:11.5px; font-weight:650; color:var(--accent); letter-spacing:.14em; text-transform:uppercase;
-  margin-bottom:12px;
+  display:inline-flex; align-items:center; gap:7px;
+  font-size:11px; font-weight:650; color:var(--teal); letter-spacing:.14em; text-transform:uppercase;
+  margin-bottom:14px;
+  padding:6px 14px; border-radius:999px; border:1px solid rgba(9,184,167,.25); background:rgba(9,184,167,.08);
 }
 #hero .big{
-  font-size:clamp(27px,3.1vw,35px); font-weight:700; margin-bottom:10px; letter-spacing:-.022em; line-height:1.22;
-  background:linear-gradient(97deg,#15406a 0%,#09b8a7 52%,#04756b 100%);
+  font-size:clamp(27px,3.1vw,36px); font-weight:700; margin-bottom:12px; letter-spacing:-.022em; line-height:1.22;
+  background:linear-gradient(97deg,#e8edf8 10%,#7fb8ff 55%,#09b8a7 100%);
   -webkit-background-clip:text; background-clip:text; color:transparent;
 }
-#hero .sub{color:var(--muted); max-width:470px; margin:0 auto 26px; font-size:14.5px; line-height:1.6; text-wrap:pretty}
+#hero .sub{color:var(--muted); max-width:480px; margin:0 auto 26px; font-size:14.5px; line-height:1.6; text-wrap:pretty}
 .chiprow{display:flex; flex-wrap:wrap; gap:10px; justify-content:center}
 .chiprow button{
-  background:var(--surface); color:var(--text); border:1px solid var(--hairline);
+  background:rgba(17,24,40,.7); color:var(--text); border:1px solid var(--hairline);
   border-radius:999px; padding:9px 17px; font-size:13.5px; font-weight:500; cursor:pointer;
-  box-shadow:var(--shadow-1); transition:transform .18s var(--ease), box-shadow .18s var(--ease), border-color .18s var(--ease);
+  transition:background .18s var(--ease), border-color .18s var(--ease), transform .18s var(--ease);
 }
-.chiprow button:hover{transform:translateY(-1px); box-shadow:var(--shadow-2); border-color:rgba(21,64,106,.45); color:var(--accent)}
+.chiprow button:hover{background:var(--raised); border-color:rgba(74,142,240,.45); color:var(--blue); transform:translateY(-1px)}
 .chiprow button:active{transform:translateY(0)}
 
 .msg{white-space:normal; word-wrap:break-word; font-size:15px}
 .msg.user{
-  align-self:flex-end; background:var(--accent); color:#fff;
-  border-radius:20px; border-bottom-right-radius:7px; padding:10px 17px; max-width:78%; white-space:pre-wrap;
-  box-shadow:0 1px 3px rgba(21,64,106,.28);
+  align-self:flex-end; background:linear-gradient(135deg,#1d4f86,#15406a);
+  color:#fff; border-radius:20px; border-bottom-right-radius:7px; padding:10px 17px; max-width:78%;
+  white-space:pre-wrap; box-shadow:0 2px 8px rgba(9,20,45,.45);
 }
 .msg.bot{align-self:flex-start; width:100%}
 .msg.bot h3,.msg.bot h4,.msg.bot h5{margin:12px 0 4px; line-height:1.35; letter-spacing:-.012em}
 .msg.bot h3{font-size:17px; font-weight:650}.msg.bot h4{font-size:15px; font-weight:650}.msg.bot h5{font-size:13.5px; color:var(--muted)}
 .msg.bot p{margin:7px 0; text-wrap:pretty}
 .msg.bot ul,.msg.bot ol{margin:7px 0; padding-left:22px}
-.msg.bot blockquote{margin:7px 0; padding:4px 14px; border-left:3px solid rgba(21,64,106,.4); color:var(--muted)}
-.msg.bot code{background:rgba(0,0,0,.05); padding:1.5px 6px; border-radius:6px; font-size:12.8px; font-family:ui-monospace,"SF Mono",Consolas,monospace}
-.msg.bot pre.code{background:var(--side); border:1px solid var(--hairline); border-radius:12px; padding:12px 14px; overflow-x:auto; font-size:12.5px; font-family:ui-monospace,"SF Mono",Consolas,monospace}
+.msg.bot blockquote{margin:7px 0; padding:4px 14px; border-left:3px solid rgba(74,142,240,.45); color:var(--muted)}
+.msg.bot code{background:rgba(148,183,255,.1); padding:1.5px 6px; border-radius:6px; font-size:12.8px; font-family:ui-monospace,"SF Mono",Consolas,monospace}
+.msg.bot pre.code{background:var(--bg2); border:1px solid var(--hairline); border-radius:12px; padding:12px 14px; overflow-x:auto; font-size:12.5px; font-family:ui-monospace,"SF Mono",Consolas,monospace}
 .msg .tablewrap{overflow-x:auto; margin:8px 0; border-radius:10px}
 table.md{border-collapse:separate; border-spacing:0; font-size:13px; min-width:60%; background:var(--surface)}
 table.md th,table.md td{border-bottom:1px solid var(--hairline); padding:7px 11px; text-align:left; vertical-align:top}
 table.md tr th:first-child,table.md tr td:first-child{border-left:1px solid var(--hairline)}
 table.md tr th:last-child,table.md tr td:last-child{border-right:1px solid var(--hairline)}
-table.md thead th{border-top:1px solid var(--hairline); background:var(--side); font-weight:600}
+table.md thead th{border-top:1px solid var(--hairline); background:var(--surface2); font-weight:600}
 table.md tbody tr:last-child td{border-bottom:1px solid var(--hairline)}
-/* Indikator mengetik seamless (ronde 4): 3 titik berdenyut, tanpa teks */
+/* Indikator mengetik: 3 titik berdenyut */
 .typing{display:flex; gap:5px; align-items:center; padding:8px 0}
 .tdot{width:7px; height:7px; border-radius:50%; background:var(--muted); opacity:.35; animation:tbounce 1.2s infinite}
 .tdot:nth-child(2){animation-delay:.15s}
 .tdot:nth-child(3){animation-delay:.3s}
 @keyframes tbounce{0%,60%,100%{transform:translateY(0); opacity:.35}30%{transform:translateY(-4px); opacity:1}}
-/* Streaming balasan (ronde 4): kursor berkedip + teks status menunggu */
+/* Streaming balasan: caret berkedip + teks status */
 .stream-status{display:flex; align-items:center; gap:8px; color:var(--muted); font-size:13px; padding:6px 0}
-.caret{display:inline-block; width:2px; height:15px; background:var(--accent); margin-left:3px; vertical-align:-2px; border-radius:1px; animation:caret 1s steps(2,start) infinite}
+.caret{display:inline-block; width:2px; height:15px; background:var(--teal); margin-left:3px; vertical-align:-2px; border-radius:1px; animation:caret 1s steps(2,start) infinite}
 @keyframes caret{50%{opacity:0}}
 
-/* ============ Approval card (draft silabus) ============ */
+/* ============ Approval card ============ */
 .approval-card{width:100%}
-.approval-card.stale{opacity:.45; pointer-events:none; transition:opacity .3s}
+.approval-card.stale{opacity:.4; pointer-events:none; transition:opacity .3s}
 .ac-head{font-weight:650; margin-bottom:12px; font-size:15.5px; letter-spacing:-.012em}
 .ac-modules{display:flex; flex-direction:column; gap:8px; margin-bottom:16px}
-.ac-mod{background:var(--surface); border:1px solid var(--hairline); border-radius:16px; overflow:hidden; box-shadow:var(--shadow-1); transition:box-shadow .2s var(--ease)}
-.ac-mod:hover{box-shadow:var(--shadow-2)}
+.ac-mod{background:var(--surface); border:1px solid var(--hairline); border-radius:16px; overflow:hidden; transition:border-color .2s var(--ease)}
+.ac-mod:hover{border-color:rgba(148,183,255,.2)}
 .ac-row{display:flex; align-items:center; gap:10px; padding:12px 15px; cursor:pointer; transition:background .15s}
 .ac-row:hover{background:var(--hover)}
 .ac-row .mid{color:var(--muted); font-size:12px; min-width:34px; font-weight:600}
@@ -212,44 +222,48 @@ table.md tbody tr:last-child td{border-bottom:1px solid var(--hairline)}
 .ac-detail .hint{color:var(--muted); font-size:11.5px; margin:10px 0 4px}
 .ac-actions{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
 .ac-actions input{
-  flex:1; min-width:180px; background:var(--surface); color:var(--text); border:1px solid var(--input-border);
+  flex:1; min-width:180px; background:var(--surface2); color:var(--text); border:1px solid var(--input-border);
   border-radius:999px; padding:10px 16px; font-size:13.5px; outline:none;
   transition:border-color .15s, box-shadow .15s;
 }
-.ac-actions input:focus{border-color:var(--accent); box-shadow:var(--ring)}
+.ac-actions input::placeholder{color:var(--muted)}
+.ac-actions input:focus{border-color:var(--blue); box-shadow:var(--ring)}
 .btn{
-  background:var(--surface); color:var(--text); border:1px solid var(--input-border);
+  background:var(--surface2); color:var(--text); border:1px solid var(--input-border);
   border-radius:999px; padding:9px 17px; font-size:13.5px; font-weight:500; cursor:pointer; white-space:nowrap;
-  transition:background .15s var(--ease), transform .12s var(--ease), box-shadow .15s var(--ease);
+  transition:background .15s var(--ease), transform .12s var(--ease), border-color .15s var(--ease);
 }
-.btn:hover{background:var(--hover)}
+.btn:hover{background:var(--raised)}
 .btn:active{transform:scale(.98)}
-.btn.primary{background:var(--accent); color:#fff; border-color:var(--accent); font-weight:600; box-shadow:0 1px 3px rgba(21,64,106,.35)}
-.btn.primary:hover{background:var(--accent-down)}
+.btn.primary{background:linear-gradient(135deg,#3a78d0,#15406a); color:#fff; border-color:transparent; font-weight:600; box-shadow:0 2px 10px rgba(31,79,134,.4)}
+.btn.primary:hover{background:linear-gradient(135deg,#4a8ef0,#1d4f86)}
 .btn:disabled{opacity:.45; cursor:not-allowed}
 
 /* ============ Tabel silabus (format Word) ============ */
 table.syl{border-collapse:collapse; width:100%; font-size:12.3px; margin-top:8px; background:var(--surface); border-radius:10px}
-table.syl th,table.syl td{border:1px solid var(--hairline); padding:7px 10px; text-align:left; vertical-align:top}
-table.syl th{background:var(--side); font-size:10.5px; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); font-weight:650}
-table.syl td.elemen{font-weight:600; background:var(--side); width:15%}
+table.syl th,table.syl td{border:1px solid rgba(148,183,255,.13); padding:7px 10px; text-align:left; vertical-align:top}
+table.syl th{background:var(--surface2); font-size:10.5px; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); font-weight:650}
+table.syl td.elemen{font-weight:600; background:var(--surface2); width:15%}
 table.syl td.kuk{width:23%}
 table.syl td .kno{color:var(--muted); font-weight:600; margin-right:5px}
 table.syl td.durasi{white-space:nowrap; color:var(--muted); width:7%}
 
 /* ============ Composer ============ */
-.composer-wrap{flex:0 0 auto; padding:8px 24px 16px; background:linear-gradient(to bottom, rgba(251,251,253,0), var(--bg) 32%)}
+.composer-wrap{flex:0 0 auto; padding:8px 24px 16px; background:linear-gradient(to bottom, rgba(10,14,23,0), var(--bg) 32%)}
 .composer{
   max-width:768px; margin:0 auto; display:flex; gap:8px; align-items:flex-end;
-  background:var(--surface); border:1px solid var(--input-border); border-radius:26px; padding:9px 10px 9px 12px;
+  background:rgba(17,24,40,.85); border:1px solid var(--input-border); border-radius:26px; padding:9px 10px 9px 12px;
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
   box-shadow:var(--shadow-1);
   transition:border-color .18s var(--ease), box-shadow .18s var(--ease);
 }
-.composer:focus-within{border-color:var(--accent); box-shadow:var(--shadow-2), var(--ring)}
+.composer:focus-within{border-color:rgba(74,142,240,.5); box-shadow:var(--shadow-2), var(--ring)}
 .composer textarea{
   flex:1; background:transparent; color:var(--text); border:0; outline:none; resize:none;
   font-family:inherit; font-size:15px; line-height:1.5; max-height:150px; padding:5px 0;
 }
+.composer textarea::placeholder{color:var(--muted)}
+.composer textarea:disabled{opacity:.55}
 .composer .icon-btn{
   background:none; border:0; color:var(--muted); cursor:pointer;
   width:36px; height:36px; border-radius:50%; flex:0 0 auto;
@@ -259,26 +273,24 @@ table.syl td.durasi{white-space:nowrap; color:var(--muted); width:7%}
 .composer .icon-btn:hover{background:var(--hover); color:var(--text)}
 .composer .icon-btn:disabled{opacity:.4; cursor:not-allowed}
 .composer #btn-chat{
-  background:var(--accent); color:#fff; border:0; border-radius:50%;
+  background:linear-gradient(135deg,#3a78d0,#15406a); color:#fff; border:0; border-radius:50%;
   width:34px; height:34px; cursor:pointer; flex:0 0 auto;
   display:flex; align-items:center; justify-content:center;
-  box-shadow:0 1px 3px rgba(21,64,106,.35);
-  transition:background .15s var(--ease), transform .12s var(--ease), opacity .15s;
+  box-shadow:0 2px 8px rgba(31,79,134,.45);
+  transition:filter .15s var(--ease), transform .12s var(--ease), opacity .15s;
 }
-.composer #btn-chat:hover{background:var(--accent-down)}
+.composer #btn-chat:hover{filter:brightness(1.15)}
 .composer #btn-chat:active{transform:scale(.94)}
+.composer #btn-chat.stop{background:#b3261e; box-shadow:0 2px 8px rgba(179,26,30,.4)}
 .composer #btn-chat:disabled{opacity:.3; cursor:not-allowed; box-shadow:none}
-.composer textarea:disabled{opacity:.55}
-.composer-hint{
-  max-width:768px; margin:8px auto 0; text-align:center; font-size:11.5px; color:var(--muted);
-}
+.composer-hint{max-width:768px; margin:8px auto 0; text-align:center; font-size:11.5px; color:var(--muted)}
 .composer-hint a{color:var(--muted)}
 .composer-hint a:hover{color:var(--text)}
 
-.spinner{display:inline-block; width:12px; height:12px; border:2px solid rgba(0,0,0,.1); border-top-color:var(--accent); border-radius:50%; animation:spin .8s linear infinite}
+.spinner{display:inline-block; width:12px; height:12px; border:2px solid rgba(148,183,255,.2); border-top-color:var(--teal); border-radius:50%; animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-/* Narasi progres live ala Claude Code (ronde 6) */
-.stage-glyph{display:inline-block; color:var(--accent); animation:pulseG 1.1s ease infinite}
+/* Narasi progres live */
+.stage-glyph{display:inline-block; color:var(--teal); animation:pulseG 1.1s ease infinite}
 @keyframes pulseG{0%,100%{opacity:.3}50%{opacity:1}}
 .stage-time{color:var(--muted); font-size:11px; min-width:34px; text-align:right}
 .run-done{color:var(--muted); font-size:12px; padding:1px 2px}
@@ -287,11 +299,11 @@ table.syl td.durasi{white-space:nowrap; color:var(--muted); width:7%}
 
 @media (max-width:820px){
   #btn-menu{display:block}
-  #sidebar{position:fixed; z-index:50; height:100vh; box-shadow:8px 0 40px rgba(0,0,0,.12)}
-  #sidebar.collapsed{margin-left:-280px}
+  #sidebar{position:fixed; z-index:50; height:100dvh; box-shadow:8px 0 40px rgba(0,0,0,.5)}
+  #sidebar.collapsed{margin-left:-288px}
   .msg.user{max-width:88%}
   #chat-col{padding:56px 16px 8px}
-  #hero{padding-top:12vh}
+  #hero{padding-top:11dvh}
 }
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation-duration:.01ms!important; transition-duration:.01ms!important}
@@ -328,7 +340,7 @@ table.syl td.durasi{white-space:nowrap; color:var(--muted); width:7%}
     <main id="scroll">
       <div id="chat-col">
         <div id="hero">
-          <div class="eyebrow">Kemnaker AI Module Builder</div>
+          <div class="eyebrow"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2l2.4 5.4L20 9.5l-4.2 3.6L17 19l-5-3-5 3 1.2-5.9L4 9.5l5.6-2.1L12 2z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg> Kemnaker AI Module Builder</div>
           <div class="big">Ada program pelatihan apa yang mau kita buatkan modulnya?</div>
           <div class="sub">Saya akan tanyakan dulu cakupannya — semua unit kompetensi atau pilihan Anda — lalu menyusun silabus per unit untuk disetujui sebelum diproduksi.</div>
           <div class="chiprow" id="suggest"></div>
@@ -351,7 +363,6 @@ table.syl td.durasi{white-space:nowrap; color:var(--muted); width:7%}
 <script>
 const API = "";
 // Deployment: 401 dari API mana pun = sesi login habis -> arahkan ke /login.
-// Wrapper fetch sama-origin; cookie sesi dikirim otomatis oleh browser.
 const _fetch = window.fetch.bind(window);
 window.fetch = async (...args) => {
   const r = await _fetch(...args);
@@ -363,12 +374,11 @@ let threadId = sessionStorage.getItem("thread_id") || null;
 let approvalModules = [];  // modul draft terakhir untuk card approval
 let cardCounter = 0;
 let done = false;
-let busy = false;          // ronde 5: true selama AI generate
-let chatAbort = null;      // ronde 14: AbortController percakapan berjalan
-/* Ronde 9: produksi = daftar run paralel (satu per thread yang di-approve),
-   BUKAN satu slot global. Riwayat chat = list di sidebar (/api/threads). */
-const runs = new Map();    // thread_id -> run state
-let runLoop = null;        // interval render global (mati saat tak ada run aktif)
+let busy = false;
+let chatAbort = null;      // AbortController percakapan berjalan
+/* Produksi = daftar run paralel (satu per thread yang di-approve). */
+const runs = new Map();
+let runLoop = null;
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
@@ -381,8 +391,6 @@ function inlineMd(s){
     .replace(/`([^`\n]+)`/g, "<code>$1</code>");
 }
 function renderMarkdown(src){
-  // Sanitasi artefak model (ronde 4): tag thinking, switch /no_think, dan
-  // fence ``` yang membungkus seluruh pesan - tidak boleh tampil di chat.
   let raw = (src || "")
     .replace(/<think>[\s\S]*?<\/think>/gi, "")
     .replace(/<\/?think>/gi, "")
@@ -394,7 +402,6 @@ function renderMarkdown(src){
   let out = [], i = 0;
   while (i < lines.length){
     const line = lines[i];
-    // fenced code
     if (line.trim().startsWith("```")){
       const buf = []; i++;
       while (i < lines.length && !lines[i].trim().startsWith("```")){ buf.push(esc(lines[i])); i++; }
@@ -402,7 +409,6 @@ function renderMarkdown(src){
       out.push(`<pre class="code">${buf.join("\n")}</pre>`);
       continue;
     }
-    // pipe table
     if (/^\s*\|.*\|\s*$/.test(line) && i + 1 < lines.length && /^\s*\|[\s:\-|]+\|\s*$/.test(lines[i + 1])){
       const parseRow = (r) => r.trim().replace(/^\|/, "").replace(/\|$/, "").split("|").map(c => c.trim());
       const tbl = ["<div class='tablewrap'><table class='md'><thead><tr>",
@@ -416,12 +422,9 @@ function renderMarkdown(src){
       out.push(tbl.join(""));
       continue;
     }
-    // heading
     const h = line.match(/^\s*(#{1,4})\s+(.*)$/);
     if (h){ const lvl = Math.min(5, h[1].length + 2); out.push(`<h${lvl}>${inlineMd(esc(h[2]))}</h${lvl}>`); i++; continue; }
-    // quote
     if (/^\s*&gt;\s?/.test(line)){ out.push(`<blockquote>${inlineMd(esc(line.replace(/^\s*&gt;\s?/, "")))}</blockquote>`); i++; continue; }
-    // list
     if (/^\s*[-*]\s+/.test(line)){
       const items = [];
       while (i < lines.length && /^\s*[-*]\s+/.test(lines[i])){ items.push(`<li>${inlineMd(esc(lines[i].replace(/^\s*[-*]\s+/, "")))}</li>`); i++; }
@@ -432,7 +435,6 @@ function renderMarkdown(src){
       while (i < lines.length && /^\s*\d+\.\s+/.test(lines[i])){ items.push(`<li>${inlineMd(esc(lines[i].replace(/^\s*\d+\.\s+/, "")))}</li>`); i++; }
       out.push(`<ol>${items.join("")}</ol>`); continue;
     }
-    // paragraph (baris kosong = pemisah)
     if (!line.trim()){ i++; continue; }
     const buf = [];
     while (i < lines.length && lines[i].trim() && !/^\s*(#{1,4}\s|[-*]\s|\d+\.\s|\||&gt;|```)/.test(lines[i])){
@@ -447,7 +449,7 @@ function renderMarkdown(src){
 function cell(s){ return esc(s || "—").replace(/\n/g, "<br>"); }
 function renderSyllabusTable(rows){
   if (!rows || !rows.length) return null;
-  const groups = [];  // [{elemenNo, elemen, rows:[]}]
+  const groups = [];
   for (const r of rows){
     const key = `${r.elemen_no || ""}§${r.elemen || ""}`;
     if (groups.length && groups[groups.length - 1].key === key) groups[groups.length - 1].rows.push(r);
@@ -485,9 +487,6 @@ function addMsg(role, text){
   return el;
 }
 function addTyping(){
-  // Indikator mengetik seamless (ronde 4): elemen DOM langsung dengan
-  // titik animasi - JANGAN lewat addMsg, karena renderMarkdown meng-escape
-  // HTML sehingga tag tampil sebagai teks mentah (bug yang dikeluhkan).
   const el = document.createElement("div");
   el.className = "msg bot typing";
   el.innerHTML = '<span class="tdot"></span><span class="tdot"></span><span class="tdot"></span>';
@@ -497,7 +496,6 @@ function addTyping(){
 }
 
 function renderApprovalCard(mods){
-  // Redupkan card lama - hanya approval terbaru yang aktif
   document.querySelectorAll(".approval-card").forEach(c => c.classList.add("stale"));
   approvalModules = mods;
   const card = document.createElement("div");
@@ -539,7 +537,7 @@ function toggleDetail(cc, i){
 }
 
 function sendChat(){
-  if (busy) return;  // ronde 5: jangan interrupt AI yang sedang menjawab
+  if (busy) return;
   const t = $("chat-text").value.trim();
   if (t) sendChatRaw(t);
 }
@@ -549,24 +547,23 @@ function sendRevision(){
   sendChatRaw(t);
 }
 
-/* Ronde 14: tombol kirim berganti jadi tombol STOP selama agent menjawab.
-   Textarea TETAP aktif (user boleh mengetik pesan berikutnya) - yang
-   dikunci hanya pengiriman (sendChat guard busy + tombol = Stop). */
+/* Tombol kirim berganti jadi tombol STOP selama agent menjawab.
+   Textarea TETAP aktif — yang dikunci hanya pengiriman. */
 const SEND_ICON = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 19.5V5.5M5.5 12l6.5-6.5L18.5 12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const STOP_ICON = '<svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3" fill="currentColor"/></svg>';
 function setSendBtn(mode){
   const b = $("btn-chat");
   if (mode === "stop"){
     b.title = "Hentikan balasan"; b.innerHTML = STOP_ICON; b.onclick = stopChat;
+    b.classList.add("stop");
   } else {
     b.title = "Kirim"; b.innerHTML = SEND_ICON; b.onclick = sendChat;
+    b.classList.remove("stop");
   }
   b.disabled = false;
 }
 async function stopChat(){
   if (!busy || !chatAbort) return;
-  // tid = thread milik stream INI (chatAbort.tid di-set saat event "thread"
-  // tiba) - BUKAN thread yang sedang dibuka user, yang bisa sudah berganti.
   const tid = chatAbort.tid || threadId;
   try{
     if (tid) await fetch(`${API}/api/stop/${tid}`, { method: "POST" });
@@ -582,16 +579,15 @@ function markStopped(placeholder, acc){
   $("scroll").scrollTop = $("scroll").scrollHeight;
 }
 function applyChatResponse(j, placeholder, fromTid){
-  /* Ronde 9b: user boleh pindah thread saat chat berjalan. Bila ia sudah
-     pindah (thread aktif != thread asal pesan), balasan TIDAK menimpa view
-     aktif — server sudah menyimpannya; cukup refresh daftar Riwayat. */
+  /* User boleh pindah thread saat chat berjalan. Bila sudah pindah,
+     balasan TIDAK menimpa view aktif — server sudah menyimpannya. */
   const userSwitched = fromTid !== undefined && threadId !== fromTid;
   if (!userSwitched){
     threadId = j.thread_id;
     sessionStorage.setItem("thread_id", threadId);
     placeholder.classList.remove("typing");
     placeholder.innerHTML = renderMarkdown(j.reply);
-    if (!document.contains(placeholder)) $("chat-log").appendChild(placeholder);  // thread sama dibuka ulang saat streaming
+    if (!document.contains(placeholder)) $("chat-log").appendChild(placeholder);
     if (j.modules && j.modules.length){
       renderApprovalCard(j.modules);
       log(`Silabus siap: ${j.modules.length} modul — menunggu approval`);
@@ -601,19 +597,11 @@ function applyChatResponse(j, placeholder, fromTid){
   } else {
     log("Balasan percakapan lama selesai — masuk ke daftar Riwayat");
   }
-  loadThreads();  // ronde 9: daftar riwayat ikut terbarui
+  loadThreads();
 }
 
-/* Streaming chat (ronde 4): balasan Agent 1 mengalir token-per-token via SSE
-   - UI tampak mengetik jawaban (kursor berkedip), bukan menggantung diam.
-   Delta dari server sudah difilter (thinking + JSON dibuang) sehingga yang
-   tampil hanya teks balasan manusiawi. */
-/* -------- Narasi progres live ala Claude Code (ronde 6) --------
-   Teks status diROTASI per tahap memakai varian aktivitas NYATA tahap itu
-   (bukan drama): "agent1.dig" memang membaca program, menganalisis unit,
-   menelaah tabel, lalu menyiapkan pertanyaan. Stage tanpa varian (narasi
-   produksi dari server) menampilkan teks server apa adanya. Glyph berdenyut
-   + penghitung detik memberi rasa hidup saat LLM berpikir. */
+/* Streaming chat via SSE + fallback non-stream. */
+/* Narasi progres: teks status diROTASI per tahap memakai varian aktivitas nyata. */
 const STAGE_VARIANTS = {
   "agent1.dig":   ["Membaca program pelatihan…", "Menganalisis daftar unit kompetensi…", "Menelaah tabel acuan silabus…", "Menyiapkan pertanyaan penggalian…"],
   "agent1.build": ["Menyusun draft silabus…", "Memetakan elemen & KUK tiap unit…", "Menghitung alokasi JP per baris…", "Menyelaraskan draft dengan SKKNI…"],
@@ -639,7 +627,7 @@ function startStage(el, stage, text){
   let tick = 0;
   stageTimer = setInterval(() => {
     tick++;
-    if (variants.length && tick % 8 === 0) vi++;  // varian berganti tiap ~4 detik
+    if (variants.length && tick % 8 === 0) vi++;
     paint();
   }, 500);
 }
@@ -651,7 +639,7 @@ async function streamChat(text, placeholder, fromTid, signal){
     r = await fetch(API + "/api/chat/stream", {
       method: "POST", headers: {"Content-Type": "application/json"},
       body: JSON.stringify({ thread_id: threadId, message: text }),
-      signal,   // ronde 14: tombol Stop memutus stream dari sisi client
+      signal,
     });
   } catch (e){
     if (signal.aborted){ markStopped(placeholder, ""); return; }
@@ -686,9 +674,6 @@ async function streamChat(text, placeholder, fromTid, signal){
         let ev;
         try{ ev = JSON.parse(line.slice(6)); } catch (e){ continue; }
         if (ev.type === "thread"){
-          // Ronde 14: id thread dikirim server SEKETIKA - dicatat agar
-          // tombol Stop tahu thread mana yang dihentikan (thread baru dari
-          // pesan pertama belum diketahui client sebelumnya).
           threadId = ev.thread_id;
           sessionStorage.setItem("thread_id", threadId);
           if (chatAbort) chatAbort.tid = threadId;
@@ -720,15 +705,12 @@ async function streamChat(text, placeholder, fromTid, signal){
       }
     }
   } catch (rdErr){
-    // Abort dari tombol Stop: reader.read() melempar AbortError - teks
-    // yang sudah mengalir TETAP ditampilkan (tidak dianggap error).
     if (signal.aborted){ markStopped(placeholder, acc); return; }
     throw rdErr;
   }
   stopStage();
   streaming = false;
   if (acc.trim()){
-    // koneksi putus di tengah: tampilkan teks yang sudah diterima
     placeholder.classList.remove("typing");
     placeholder.innerHTML = renderMarkdown(acc);
     $("scroll").scrollTop = $("scroll").scrollHeight;
@@ -739,15 +721,13 @@ async function streamChat(text, placeholder, fromTid, signal){
 }
 
 async function sendChatRaw(text){
-  if (busy) return;  // satu percakapan dalam satu waktu
+  if (busy) return;
   busy = true;
-  chatAbort = new AbortController();   // ronde 14
-  const fromTid = threadId;   // ronde 9b: thread asal pesan (utk deteksi pindah chat)
+  chatAbort = new AbortController();
+  const fromTid = threadId;
   const signal = chatAbort.signal;
   $("chat-text").value = "";
   $("chat-text").style.height = "auto";
-  // Ronde 14: textarea TIDAK dikunci - user tetap bisa mengetik pesan
-  // berikutnya sambil menunggu; yang dikunci hanya pengirimannya.
   $("btn-attach").disabled = true;
   hideHero();
   addMsg("user", text);
@@ -756,9 +736,6 @@ async function sendChatRaw(text){
   try{
     await streamChat(text, placeholder, fromTid, signal);
   } catch (streamErr){
-    // Fallback ke /api/chat HANYA bila gagal sebelum server memproses pesan
-    // (endpoint tidak ada / jaringan putus di awal). Pesan yang sudah
-    // diproses server jangan dikirim ulang - cukup laporkan kendalanya.
     if (signal.aborted){
       markStopped(placeholder, "");
     } else if (streamErr.fallback){
@@ -793,11 +770,7 @@ async function sendChatRaw(text){
   }
 }
 
-/* ---------------- Approve + produksi paralel (ronde 9) ----------------
-   Tiap approve mendaftar SATU run di panel Produksi (keyed thread_id);
-   beberapa run bisa berjalan paralel - user bisa menyetujui draft lain
-   sementara produksi sebelumnya masih berjalan. Run lama tetap terdaftar
-   (judul, langkah, kartu modul, dan tombol unduhnya). */
+/* ---------------- Approve + produksi paralel ---------------- */
 const NODE_LABELS = {
   "Agent2_Node": "Penulisan materi modul",
   "Agent3_Node": "Pemeriksaan kualitas",
@@ -830,10 +803,8 @@ function statusBadge(m){
   return '<span class="badge write">menulis…</span>';
 }
 function renderRuns(){
-  // "Belum ada produksi berjalan" HANYA saat tidak ada run sama sekali
-  // (ronde 9 poin 2) - run yang sudah selesai tetap tampil dengan tombol unduh.
   $("cards-empty").style.display = runs.size ? "none" : "";
-  const entries = [...runs.entries()].reverse();  // run terbaru di atas
+  const entries = [...runs.entries()].reverse();
   $("runs").innerHTML = entries.map(([tid, r]) => {
     const s = Math.floor((Date.now() - r.t0) / 1000);
     const badge = r.error ? '<span class="badge err">gagal</span>'
@@ -857,7 +828,7 @@ function renderRuns(){
     }).join("");
     const dls = r.docs.map((p) => {
       const name = p.split(/[\\/]/).pop();
-      return `<a class="dl-item" href="${API}/api/download/${encodeURIComponent(name)}" download>📄 ${esc(name)}</a>`;
+      return `<a class="dl-item" href="${API}/api/download/${encodeURIComponent(name)}" download><span style="color:var(--teal)">\u2713</span> ${esc(name)}</a>`;
     }).join("");
     const foot = r.error ? `<div class="feedback" style="color:var(--err);font-size:11.5px;margin-top:4px">${esc(r.error)}</div>` : "";
     return `<div class="run-block">
@@ -914,7 +885,6 @@ function handleEvent(ev, tid){
   if (ev.type === "phase"){ log("Phase: " + ev.phase); }
   else if (ev.type === "node"){
     log("Node: " + ev.node);
-    // node selesai = langkah nyata yang tuntas -> riwayat ✓ run ini.
     const lbl = NODE_LABELS[ev.node];
     if (lbl && r.done[r.done.length - 1] !== lbl) r.done.push(lbl);
   }
@@ -936,7 +906,7 @@ function handleEvent(ev, tid){
   }
 }
 
-/* ---------------- Sidebar, riwayat chat, upload program (ronde 9) ---------------- */
+/* ---------------- Sidebar, riwayat chat, upload program ---------------- */
 function toggleSidebar(ev){ if (ev) ev.preventDefault(); $("sidebar").classList.toggle("collapsed"); }
 function hideHero(){ $("hero").style.display = "none"; }
 function log(line){
@@ -947,7 +917,6 @@ function log(line){
   $("log").scrollTop = $("log").scrollHeight;
 }
 
-/* --- Riwayat chat: chat baru TIDAK menghapus yang lama; klik utk membuka --- */
 const PHASE_LABEL = { chat: "percakapan", approval: "menunggu setuju", producing: "berjalan", done: "selesai" };
 let threadItems = [];
 async function loadThreads(){
@@ -967,8 +936,6 @@ function renderThreads(){
     </button>`).join("");
 }
 async function openThread(tid){
-  // Ronde 9b: BOLEH pindah thread kapan pun — chat yang sedang berjalan
-  // tetap selesai di latar belakang; balasannya masuk ke daftar Riwayat.
   try{
     const j = await (await fetch(`${API}/api/state/${tid}`)).json();
     threadId = tid; sessionStorage.setItem("thread_id", tid);
@@ -992,7 +959,6 @@ async function openThread(tid){
     if (window.innerWidth <= 820) $("sidebar").classList.add("collapsed");
     $("chat-text").focus();
   } catch (err){
-    // thread tidak dikenal (server baru / sesi dibersihkan): buang dari tab ini
     if (tid === threadId){ sessionStorage.removeItem("thread_id"); threadId = null; renderThreads(); }
     log("Gagal membuka percakapan: " + err.message);
   }
@@ -1005,26 +971,25 @@ function ensureDoneRun(tid, j){
   renderRuns();
 }
 function newThread(){
-  const hadRunning = busy && threadId;   // ronde 9b: chat lama masih diproses?
+  const hadRunning = busy && threadId;
   threadId = null;
   sessionStorage.removeItem("thread_id");
   approvalModules = []; done = false;
   $("chat-log").innerHTML = "";
   $("hero").style.display = "";
-  renderThreads();          // riwayat lama TETAP terdaftar di sidebar
+  renderThreads();
   if (hadRunning){
     addMsg("bot", "Percakapan sebelumnya masih diproses di latar belakang — balasannya akan muncul otomatis di daftar *Riwayat* saat selesai, dan tidak hilang.");
   }
   $("chat-text").focus();
 }
 
-/* Upload program milik user (feedback ronde 2 item 4) */
 $("btn-attach").addEventListener("click", () => $("file-input").click());
 $("file-input").addEventListener("change", async (e) => {
   const f = e.target.files[0];
   e.target.value = "";
   if (!f) return;
-  addMsg("user", `📎 Mengganti program pelatihan: **${f.name}**`);
+  addMsg("user", `Mengganti program pelatihan: **${f.name}**`);
   const placeholder = addTyping();
   try{
     const fd = new FormData();
@@ -1035,7 +1000,7 @@ $("file-input").addEventListener("change", async (e) => {
       throw new Error(e2.detail || r.statusText);
     }
     const j = await r.json();
-    sessionStorage.removeItem("thread_id"); threadId = null;   // program baru = percakapan baru
+    sessionStorage.removeItem("thread_id"); threadId = null;
     $("chat-log").innerHTML = "";
     approvalModules = []; done = false;
     $("hero").style.display = "";
@@ -1073,12 +1038,11 @@ async function loadSuggestions(){
 }
 function useSuggest(msg){ $("chat-text").value = msg; $("chat-text").focus(); }
 async function restore(){
-  loadThreads();             // riwayat chat dimuat saat halaman dibuka
+  loadThreads();
   if (!threadId) return;
   await openThread(threadId);
 }
 
-// Auto-resize textarea + Enter to send
 $("chat-text").addEventListener("input", (e) => { e.target.style.height = "auto"; e.target.style.height = Math.min(150, e.target.scrollHeight) + "px"; });
 $("chat-text").addEventListener("keydown", (e) => {
   if (e.key === "Enter" && !e.shiftKey){ e.preventDefault(); sendChat(); }

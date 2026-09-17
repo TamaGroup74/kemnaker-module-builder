@@ -3,34 +3,41 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0a0e17">
 <title>Login — Module Builder</title>
 <style>
   :root{
-    --bg:#fbfbfd; --surface:#ffffff; --side:#f5f5f7;
-    --text:#1d1d1f; --muted:#6e6e73;
-    --hairline:rgba(0,0,0,.10); --input-border:rgba(0,0,0,.16);
-    --accent:#0a8a4e; --accent-down:#077541; --accent-soft:rgba(10,138,78,.09);
-    --ring:rgba(10,138,78,.22);
-    --shadow-1:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.06);
+    --bg:#0a0e17; --surface:#111828; --side:#0d1220;
+    --text:#e8edf8; --muted:#8a94ad;
+    --hairline:rgba(148,183,255,.12); --input-border:rgba(148,183,255,.18);
+    --accent:#09b8a7; --accent-down:#04756b;
+    --ring:rgba(9,184,167,.3);
+    --shadow-1:0 8px 32px rgba(2,6,16,.55),0 24px 80px rgba(2,6,16,.45);
     --ease:cubic-bezier(.3,.15,.25,1);
   }
   *{margin:0;padding:0;box-sizing:border-box}
   body{
     font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",system-ui,Roboto,"Helvetica Neue",Arial,sans-serif;
-    background:var(--bg); color:var(--text);
+    color:var(--text);
     min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px;
     -webkit-font-smoothing:antialiased;
+    background:
+      radial-gradient(900px 480px at 16% -6%, rgba(21,64,106,.55), transparent 62%),
+      radial-gradient(720px 400px at 88% 4%, rgba(9,184,167,.16), transparent 64%),
+      var(--bg);
   }
   .card{
-    width:100%; max-width:400px; background:var(--surface);
+    width:100%; max-width:400px; background:rgba(17,24,40,.85);
     border:1px solid var(--hairline); border-radius:20px;
+    backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
     box-shadow:var(--shadow-1); padding:36px 32px 30px;
   }
   .mark{
     width:52px; height:52px; border-radius:14px; margin:0 auto 18px;
-    background:linear-gradient(135deg,#3ddc7a,#0a8a4e);
+    background:linear-gradient(135deg,#09b8a7,#15406a);
     display:flex; align-items:center; justify-content:center;
-    box-shadow:0 4px 12px rgba(10,138,78,.28);
+    box-shadow:0 4px 16px rgba(9,184,167,.3), inset 0 1px 0 rgba(255,255,255,.25);
   }
   .mark svg{width:26px; height:26px; fill:#fff}
   h1{font-size:21px; font-weight:700; text-align:center; letter-spacing:-.02em}
@@ -38,21 +45,23 @@
   label{display:block; font-size:12.5px; font-weight:600; color:var(--muted); margin-bottom:6px}
   input[type=password]{
     width:100%; font:inherit; font-size:15px; color:var(--text);
-    background:var(--side); border:1px solid var(--input-border);
+    background:rgba(13,18,32,.9); border:1px solid var(--input-border);
     border-radius:10px; padding:11px 13px; outline:none; transition:border-color .2s var(--ease), box-shadow .2s var(--ease);
   }
+  input[type=password]::placeholder{color:var(--muted)}
   input[type=password]:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--ring)}
   button{
     width:100%; margin-top:16px; font:inherit; font-size:15px; font-weight:600;
-    color:#fff; background:var(--accent); border:none; border-radius:10px;
-    padding:12px; cursor:pointer; transition:background .2s var(--ease), transform .15s var(--ease);
+    color:#fff; background:linear-gradient(135deg,#3a78d0,#15406a); border:none; border-radius:10px;
+    padding:12px; cursor:pointer; transition:filter .2s var(--ease), transform .15s var(--ease);
+    box-shadow:0 4px 16px rgba(31,79,134,.35);
   }
-  button:hover{background:var(--accent-down)}
+  button:hover{filter:brightness(1.15)}
   button:active{transform:scale(.985)}
   button:disabled{opacity:.55; cursor:default}
   .err{
-    display:none; margin-top:12px; font-size:13px; color:#b42318;
-    background:rgba(180,35,24,.08); border:1px solid rgba(180,35,24,.25);
+    display:none; margin-top:12px; font-size:13px; color:#f4708b;
+    background:rgba(244,112,139,.09); border:1px solid rgba(244,112,139,.3);
     border-radius:8px; padding:9px 12px; line-height:1.4;
   }
   .foot{margin-top:22px; text-align:center; font-size:11.5px; color:var(--muted)}
